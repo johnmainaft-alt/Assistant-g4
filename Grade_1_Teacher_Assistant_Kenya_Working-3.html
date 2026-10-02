@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 1 Teacher Assistant Kenya</title>
+<style>
+:root{--green:#126b45;--green2:#1d8a5c;--light:#eef8f2;--ink:#173126;--muted:#64756d;--card:#fff;--line:#dce9e2;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f8f6;color:var(--ink)}
+header{background:linear-gradient(135deg,#0d5537,#1d8a5c);color:#fff;padding:24px 18px;position:sticky;top:0;z-index:5}
+header .wrap{max-width:1180px;margin:auto}h1{margin:0 0 5px;font-size:25px}.sub{opacity:.88;font-size:14px}
+nav{max-width:1180px;margin:14px auto 0;display:flex;gap:8px;flex-wrap:wrap}
+nav button{border:0;background:rgba(255,255,255,.14);color:#fff;padding:9px 13px;border-radius:9px;cursor:pointer}nav button.active{background:#fff;color:var(--green)}
+main{max-width:1180px;margin:20px auto;padding:0 14px}.grid{display:grid;grid-template-columns:330px 1fr;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 4px 18px #1731260c}
+label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}input,select,textarea{width:100%;padding:11px;border:1px solid #cddbd4;border-radius:9px;background:#fff;font:inherit}textarea{min-height:90px;resize:vertical}
+button.primary{background:var(--green);color:#fff;border:0;padding:11px 15px;border-radius:9px;font-weight:700;cursor:pointer}.secondary{background:#eef5f1;color:var(--green);border:1px solid #cfe1d8;padding:10px 13px;border-radius:9px;cursor:pointer}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.output h2{margin-top:0}.section{border-top:1px solid var(--line);padding:13px 0}.section:first-child{border-top:0}.section h3{margin:0 0 7px;color:var(--green);font-size:16px}.section p,.section li{font-size:14px;line-height:1.55}.section ul{margin:7px 0;padding-left:20px}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:var(--light);color:var(--green);font-size:12px;margin:2px}
+.notice{background:#fff8e6;border:1px solid #f1dfad;padding:11px;border-radius:10px;font-size:13px;color:#6b5215}
+.tabs{display:none}.tabs.show{display:block}.hidden{display:none!important}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left}th{background:#f3f7f5}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{padding:14px;background:#f5faf7;border:1px solid var(--line);border-radius:10px}.kpi b{display:block;font-size:23px;color:var(--green)}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media print{header,nav,.no-print,.builder{display:none!important}body{background:#fff}.card{box-shadow:none;border:0}main{margin:0}.output{display:block!important}}
+
+.activity-card{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;background:#fbfefc}
+.activity-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}
+.activity-number{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;align-items:center;justify-content:center;margin-right:8px;font-weight:700}
+.activity-card label{margin-top:12px}
+.material-row{display:grid;grid-template-columns:1fr 1.3fr auto;gap:8px;align-items:center}
+.materials-list{margin-top:8px;display:grid;gap:6px}
+.material-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;background:#f3f8f5;border:1px solid var(--line);border-radius:8px;font-size:13px}
+.alignment-table th{width:34%;vertical-align:top}
+.curriculum-box{background:#f8fcfa}
+@media(max-width:800px){.material-row{grid-template-columns:1fr}.activity-head{align-items:flex-start;flex-direction:column}}
+@media print{.activity-card{break-inside:avoid}.material-row,.activity-points{display:none}.materials-list{display:block}}
+
+.more-link{display:inline-block;margin:5px 0 2px;padding:5px 10px;border:1px solid #cfe1d8;border-radius:20px;background:#f3f8f5;color:var(--green);font-size:12px;font-weight:700;cursor:pointer}.more-link:hover{background:var(--green);color:#fff}
+#moreModal{position:fixed;inset:0;background:#0009;z-index:50;display:none;align-items:center;justify-content:center;padding:14px}#moreModal.open{display:flex}
+.modal-box{background:#fff;border-radius:15px;max-width:620px;width:100%;max-height:88vh;overflow:auto;padding:20px;position:relative}
+.modal-box h3{margin:0 30px 4px 0;color:var(--green)}.modal-box .pt{background:var(--light);padding:9px;border-radius:9px;font-size:14px;margin:8px 0}
+.modal-box h4{margin:14px 0 4px}.modal-box li,.modal-box p{font-size:14px;line-height:1.55}.modal-x{position:absolute;right:12px;top:10px;border:0;background:none;font-size:22px;cursor:pointer}
+.ext{display:inline-block;margin:4px 6px 0 0;padding:8px 12px;background:var(--green);color:#fff!important;border-radius:9px;text-decoration:none;font-size:13px;font-weight:700}
+@media print{.more-link,#moreModal{display:none!important}}
+
+#fileModal{position:fixed;inset:0;background:#000b;z-index:60;display:none;flex-direction:column;padding:10px}#fileModal.open{display:flex}
+.fm-bar{display:flex;align-items:center;gap:8px;background:#fff;border-radius:10px 10px 0 0;padding:9px 12px}.fm-bar b{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fm-body{flex:1;background:#fff;border-radius:0 0 10px 10px;overflow:auto;display:flex;align-items:center;justify-content:center;padding:8px}
+.fm-body img{max-width:100%;max-height:100%;object-fit:contain}.fm-body iframe{width:100%;height:100%;border:0}.fm-body video{max-width:100%;max-height:100%}
+.fm-body pre{white-space:pre-wrap;align-self:flex-start;width:100%;font-size:14px;line-height:1.55}.fm-msg{text-align:center;padding:20px;font-size:14px}
+.open-btn{background:var(--green);color:#fff;border:0;padding:6px 11px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+@media print{#fileModal{display:none!important}.open-btn{display:none}}
+
+.viewer{display:none;margin-top:10px;border:2px solid var(--green);border-radius:12px;overflow:hidden;background:#fff}.viewer.open{display:block}
+.v-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--light);padding:8px 10px}.v-bar b{flex:1;min-width:120px;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v-bar a,.v-bar button{font-size:12px;padding:6px 10px;text-decoration:none;border-radius:8px}
+.v-body{height:60vh;overflow:auto;padding:10px;font-size:14px;line-height:1.55}.viewer.big .v-body{height:85vh}
+.v-body img{max-width:100%;display:block;margin:auto}.v-body iframe,.v-body video{width:100%;height:100%;border:0}.v-body table{width:auto;min-width:100%}.v-body td,.v-body th{border:1px solid var(--line)}
+.v-body pre{white-space:pre-wrap}.slide{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#fbfefc}.slide h4{margin:0 0 6px;color:var(--green)}
+.sheet-tabs{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+@media print{.viewer{display:none!important}}
+
+.devform{background:#fff8e6;border:1px solid #f1dfad;border-radius:10px;padding:10px;margin-top:10px}.devform textarea{min-height:80px}
+nav #devBtn{margin-left:auto;background:#0d3d28;border:1px solid #ffffff55}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<h1>🇰🇪 Grade 1 Teacher Assistant Kenya</h1>
+<div class="sub">Lesson planning • assessment • homework • remedial support • learner records</div>
+<nav>
+<button class="active" onclick="showTab('planner',this)">Lesson Planner</button>
+<button onclick="showTab('records',this)">Learner Records</button>
+<button onclick="showTab('about',this)">About</button>
+<button id="devBtn" onclick="devToggle()">🔒 Developer</button>
+</nav>
+</div>
+</header>
+
+<main>
+<div id="devBar" class="notice hidden no-print" style="margin-bottom:12px"><b>Developer mode ON.</b> Your edits are saved on this device. To give teachers your changes, click <b>Download shared copy</b> and send them that file.
+<div class="actions"><button class="primary" onclick="exportCopy()">⬇ Download shared copy</button><button class="secondary" onclick="exportLib()">Export library (.json)</button><button class="secondary" onclick="document.getElementById('libImport').click()">Import library</button><input id="libImport" type="file" accept=".json" class="hidden" onchange="importLib(this)"><button class="secondary" onclick="changePin()">Change PIN</button><button class="secondary" onclick="devToggle()">Exit developer mode</button></div></div>
+<section id="planner" class="tabs show">
+<div class="grid">
+<div class="card builder no-print">
+<h2>Build a lesson</h2>
+<div class="notice">Designed for Grade 1. Use the official KICD curriculum design as the reference when checking strand, sub-strand and learning outcomes.</div>
+<label>Learning Area</label>
+<select id="subject">
+<option>English Activities</option><option>Kiswahili</option><option>Mathematics</option>
+<option>Environmental Activities</option><option>Creative Activities</option><option>CRE</option>
+</select>
+<label>Strand</label><input id="strand" placeholder="e.g. Numbers">
+<label>Sub-strand</label><input id="substrand" placeholder="e.g. Counting and number recognition">
+<label>Specific learning outcome / competency</label><textarea id="outcome" placeholder="e.g. Learners count and represent numbers 1-20 using objects"></textarea>
+<label>Topic / Sub-topic</label>
+<input id="topic" placeholder="e.g. Numbers 1–20, greetings, parts of the body">
+<label>Duration</label>
+<select id="duration"><option>30 minutes</option><option>35 minutes</option><option>40 minutes</option><option>45 minutes</option><option>60 minutes</option></select>
+<label>Class size</label><input id="classSize" type="number" value="30" min="1">
+<label>Teaching language</label>
+<select id="lang"><option>English</option><option>Kiswahili</option></select>
+<label>Lesson emphasis</label>
+<select id="level"><option>Introduction</option><option>Practice</option><option>Revision</option><option>Remedial</option></select>
+<label>Teacher notes / learner needs (optional)</label>
+<textarea id="notes" placeholder="e.g. 5 learners need extra support with counting"></textarea>
+<div class="actions">
+<button class="primary" onclick="generateLesson()">Generate Assistant Pack</button>
+<button class="secondary" onclick="fillExample()">Example</button>
+</div>
+</div>
+
+<div><div id="generateStatus" class="notice hidden no-print" style="margin-bottom:10px"></div>
+<div class="card output" id="output">
+<h2>Your lesson pack</h2>
+<p class="muted">Choose a learning area and enter a topic, then click <b>Generate Assistant Pack</b>.</p>
+</div></div>
+</div>
+</section>
+
+<section id="records" class="tabs">
+<div class="card">
+<h2>Learner-performance record</h2>
+<div class="kpis">
+<div class="kpi"><span>Learners</span><b id="count">0</b></div>
+<div class="kpi"><span>Average</span><b id="avg">0%</b></div>
+<div class="kpi"><span>At/above 70%</span><b id="strong">0</b></div>
+<div class="kpi"><span>Needs support</span><b id="support">0</b></div>
+</div>
+<div class="actions no-print">
+<button class="primary" onclick="addLearner()">Add learner</button>
+<button class="secondary" onclick="clearRecords()">Clear all</button>
+</div>
+<div id="recordTable" style="margin-top:15px"></div>
+</div>
+</section>
+
+<section id="about" class="tabs">
+<div class="card">
+<h2>What this version does</h2>
+<ul>
+<li>Generates a complete Grade 1 lesson pack from subject + topic.</li>
+<li>Allows each activity to be linked to a strand, sub-strand and specific learning outcome / competency.</li>
+<li>Provides a separate points/guidance field and material upload area for every activity.</li>
+<li>Allows teachers to attach material names and local files such as images, PDFs and Office documents to individual activities.</li>
+<li>Creates learning objectives, activities, materials, assessment questions, marking guide, homework and remedial exercises.</li>
+<li>Every objective, activity, material, assessment, homework and remedial point has a <b>More details &amp; examples</b> link with teaching tips, worked examples and optional web resources (only the developer can edit these and upload KICD resources, using a PIN).</li>
+<li>Uploaded files open <b>inside the activity itself</b> (no pop-out): images, PDFs, video, audio, text, Word (.docx), Excel (.xlsx/.csv) and PowerPoint (.pptx text). WPS files (.wps/.et/.dps) must be saved as Office/PDF first.</li>
+<li>Saves learner performance locally in the browser.</li>
+<li>Prints the generated lesson pack.</li>
+<li>Works offline once the HTML file is saved on the device.</li>
+</ul>
+<p><b>Curriculum note:</b> KICD's Lower Primary materials cover Grades 1–3 and list learning areas including English Activities, Kiswahili, Mathematics, Environmental Activities, Creative Activities and Religious Education. The official KICD designs should remain the authority for exact curriculum alignment.</p>
+<p><a href="https://kicd.ac.ke/cbc-materials/lower-primary/" target="_blank">Open KICD Lower Primary curriculum resources</a></p>
+</div>
+</section>
+</main>
+
+<script id="libdata" type="application/json">{}</script>
+<div id="moreModal" onclick="if(event.target===this)closeMore()"><div class="modal-box"><button class="modal-x" onclick="closeMore()" aria-label="Close">&times;</button><div id="moreBody"></div></div></div>
+<script>
+/* ============================================================
+   DEVELOPER RESOURCE LIBRARY  (edit this to add more teaching help)
+   RES[learning area][section][point number starting at 0] = {
+     d: "more details for the teacher",
+     e: ["example 1","example 2", ...],
+     url: "https://..."   (optional - adds an 'Open full resource' button)
+   }
+   Sections: objectives, activities, materials, assessment, homework, remedial
+   Any point without its own entry uses RES_DEFAULT[section]. Use {topic} for the lesson topic.
+   ============================================================ */
+const RES_DEFAULT={
+objectives:{d:"State the objective to learners in one simple sentence, then check it at the end with one oral question. Keep it observable: learners should be able to say, show, count, draw or do it.",e:["Say: 'Today we will learn about {topic}.'","End with: 'Show me one thing you learned about {topic}.'"]},
+activities:{d:"Keep instructions short (one at a time), demonstrate before learners try, and move around to support. Use local objects learners already know.",e:["Give the instruction, show it, then let two learners repeat it.","Use clapping or a song to move learners between steps."]},
+materials:{d:"Use low-cost local materials. Prepare enough for sharing in groups of 4-5 so every learner can touch and use something.",e:["Bottle tops, sticks, stones, leaves, old calendars, cartons.","Hand-drawn picture cards on cut manila paper."]},
+assessment:{d:"Assess orally or by observation first - Grade 1 learners show understanding by doing. Record a quick tick, half-tick or note for each learner.",e:["Ask one learner at a time while others work.","Use a tick / half-tick / cross checklist as you move around."]},
+homework:{d:"Keep homework to 5-10 minutes and doable without books or money. Invite a parent/guardian to listen, watch or sign.",e:["'Show your parent what we did today and tell them one thing.'","Draw and colour one item, bring it tomorrow."]},
+remedial:{d:"Re-teach in smaller steps with real objects, in a small group, at a quieter time. Praise every small success and re-check after a few days.",e:["Learner works with a buddy who has mastered the skill.","Break the task into 3 mini-steps and tick each one."]}};
+const RES={
+"English Activities":{activities:[
+{d:"Use objects the learners know so naming feels easy and confidence builds.",e:["Hold up a cup: 'What is this?' Learners answer 'cup'.","Show a bag: 'It is a bag.' Learners repeat the sentence."]},
+{d:"Say the word clearly 3 times, let learners echo, then say it quietly and loudly.",e:["Teacher: 'ball' - Class: 'ball' (x3)","Slow-fast game: say the word slowly, then quickly."]},
+{d:"Pairs keep everyone talking. Give a sentence starter if needed.",e:["Partner A: 'What is this?' Partner B: 'It is a pen.'","Swap roles after one minute."]},
+{d:"Matching builds the link between spoken and written word.",e:["Lay out 4 picture cards and 4 word cards; learners pair them.","Learner points to the picture the teacher names."]},
+{d:"Accept drawing first. Writing can be the first letter or the whole word depending on the learner.",e:["Draw a tree and write 't' or 'tree'.","Copy the word from the chart under the drawing."]}]},
+"Kiswahili":{activities:[
+{d:"Anza na vitu au picha wanazozijua ili kuamsha hamu.",e:["Onyesha kikombe: 'Hiki ni nini?' - 'Kikombe.'","Onyesha picha ya mama: 'Huyu ni nani?'"]},
+{d:"Tamka neno polepole mara tatu, wanafunzi warudie.",e:["Mwalimu: 'mama' - Wote: 'mama' (mara 3)","Tamka kwa sauti ya chini kisha juu."]},
+{d:"Wanafunzi wawili waulizane maswali mafupi.",e:["A: 'Jina lako nani?' B: 'Jina langu ni Amina.'","Badilishaneni nafasi."]},
+{d:"Kupanga makundi kunafundisha kulinganisha na kutofautisha.",e:["Panga picha: matunda / wanyama.","Panga kadi za maneno yenye silabi 'ma'."]},
+{d:"Mwanafunzi anaweza kuchora kwanza, kisha kuandika silabi au neno.",e:["Chora ndizi na uandike 'ndizi'.","Nakili neno kutoka ubaoni."]}]},
+"Mathematics":{activities:[
+{d:"Counting aloud with touch builds one-to-one correspondence: one number word for one object.",e:["Count 10 pupils standing, touching each one.","Count desks, books or windows together up to the lesson range."]},
+{d:"Use concrete objects first, then pictures, then symbols (concrete-pictorial-abstract).",e:["Place 5 bottle tops in a row, count, then show the numeral 5.","Add one more top: 'Now there are 6.'"]},
+{d:"Pairs sort, match or compare so learners explain their thinking.",e:["Put 8 sticks in one pile and 5 in another: 'Which has more?'","Match number cards to groups of counters."]},
+{d:"Use real-life story problems from the learners' world.",e:["'Wanjiku has 4 mangoes and gets 2 more. How many now?'","Learners act out the story with counters."]},
+{d:"Give 3-5 short questions at the learners' level; check work as you walk around.",e:["Count and write: how many stars? (draw 7)","Circle the group with more."]}]},
+"Environmental Activities":{activities:[
+{d:"Set one clear observation purpose before leaving the room and stay in sight of all learners.",e:["'Find 3 things that grow, 2 things that are made by people.'","Collect safe fallen leaves and stones."]},
+{d:"Ask open but simple questions: what, where, which. Wait for answers.",e:["'What do you see on this leaf?'","'Where does water come from at home?'"]},
+{d:"Sorting helps learners see similarities and differences.",e:["Sort objects into living / non-living.","Sort pictures into 'clean habits' and 'unclean habits'."]},
+{d:"Every group shares one finding; praise sharing in full sentences.",e:["'We saw a bird on the tree.'","Group leader holds up the item and names it."]},
+{d:"Link the lesson to behaviour at home and school.",e:["Role-play washing hands correctly.","Pick litter and put it in a bin."]}]},
+"Creative Activities":{activities:[
+{d:"Show a finished sample and state safety rules (scissors, glue, small objects) before starting.",e:["Show a simple paper-folded boat.","Rule: scissors stay on the desk when not in use."]},
+{d:"Let learners touch and name the materials to build vocabulary and safe handling.",e:["Feel rough / smooth, soft / hard.","Name colours of crayons and paper."]},
+{d:"Demonstrate step 1 slowly; learners copy before you show step 2.",e:["Fold the paper in half - everyone folds.","Draw the outline first, then colour inside."]},
+{d:"Allow free choices within the task; there is no single correct product.",e:["Make a pattern with leaf prints.","Mould an animal from clay or soil + water."]},
+{d:"Gallery walk builds confidence and speaking skills.",e:["'Tell us one thing about your work.'","Learners say one kind comment about a friend's work."]}]},
+"CRE":{activities:[
+{d:"Tell the story with expression, voice changes and pictures; keep it under 5 minutes.",e:["Retell 'The Good Samaritan' with picture cards.","Read a short verse from the Bible and explain simply."]},
+{d:"Ask recall questions first, then application questions.",e:["'Who helped the man?' (recall)","'How can you help someone at school?' (application)"]},
+{d:"Role-play lets learners practise the value safely.",e:["Act out sharing a snack.","Act out saying sorry and forgiving."]},
+{d:"Guide a short discussion so every learner can say one idea.",e:["Ask: 'How do we show kindness at home?'","Pass a ball - only the holder speaks."]},
+{d:"Drawing lets all learners respond, including those who cannot write yet.",e:["Draw yourself helping someone.","Write 'I can share.'"]}]}
+};
+let ctx={subject:'',topic:''};
+/*resFor defined below*/
+function moreLink(sec,i){return `<br><button type="button" class="more-link no-print" onclick="openMore('${sec}',${i})">🔗 More details &amp; examples</button>`}
+let DEV=false;
+const embedded=(()=>{try{return JSON.parse(document.getElementById('libdata').textContent||'{}')}catch(e){return {}}})();
+let LIB=(()=>{try{return JSON.parse(localStorage.getItem('g1ta_lib'))||embedded}catch(e){return embedded}})();
+LIB.pin=LIB.pin||'';LIB.items=LIB.items||{};
+function persist(){try{localStorage.setItem('g1ta_lib',JSON.stringify(LIB));return true}catch(e){alert('Storage is full. Delete some uploaded files, or use Download shared copy.');return false}}
+function hashPin(s){let x=5381;for(const c of s)x=((x<<5)+x+c.charCodeAt(0))>>>0;return String(x)}
+function itemKey(sec,i){return ctx.subject+'|'+sec+'|'+i}
+function resFor(sec,i){const base=(RES[ctx.subject]&&RES[ctx.subject][sec]&&RES[ctx.subject][sec][i])||RES_DEFAULT[sec];const o=LIB.items[itemKey(sec,i)]||{};return {d:o.d!==undefined?o.d:base.d,e:o.e!==undefined?o.e:base.e,url:o.url!==undefined?o.url:base.url,k:o.k||[]}}
+function devToggle(){
+if(DEV){DEV=false;return updateDevUI()}
+if(!LIB.pin){const p=prompt('First time: create a developer PIN (at least 4 characters). Keep it private:');if(!p||p.length<4)return;LIB.pin=hashPin(p);persist();DEV=true}
+else{const p=prompt('Developer PIN:');if(p===null)return;if(hashPin(p)!==LIB.pin){alert('Wrong PIN.');return}DEV=true}
+updateDevUI()}
+function updateDevUI(){document.getElementById('devBtn').textContent=DEV?'🔓 Developer: ON':'🔒 Developer';document.getElementById('devBar').classList.toggle('hidden',!DEV);closeMore()}
+function changePin(){const p=prompt('New developer PIN (at least 4 characters):');if(p&&p.length>=4){LIB.pin=hashPin(p);persist();alert('PIN changed.')}}
+function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()}
+function exportLib(){download('teacher-assistant-library.json',JSON.stringify(LIB),'application/json')}
+function importLib(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.items)throw 0;if(!d.pin)d.pin=LIB.pin;LIB=d;persist();alert('Library imported.')}catch(e){alert('That is not a valid library file.')}});inp.value=''}
+function exportCopy(){
+const c=document.documentElement.cloneNode(true);
+c.querySelector('#libdata').textContent=JSON.stringify(LIB).replace(/</g,'\\u003c');
+c.querySelector('#output').innerHTML='<h2>Your lesson pack</h2><p class="muted">Choose a learning area and enter a topic, then click <b>Generate Assistant Pack</b>.</p>';
+const st=c.querySelector('#generateStatus');st.className='notice hidden no-print';st.textContent='';st.removeAttribute('style');st.setAttribute('style','margin-bottom:10px');
+c.querySelector('#moreModal').className='';c.querySelector('#moreBody').innerHTML='';
+c.querySelector('#devBar').classList.add('hidden');c.querySelector('#devBtn').textContent='🔒 Developer';
+c.querySelectorAll('.tabs').forEach(x=>x.classList.toggle('show',x.id==='planner'));
+c.querySelectorAll('nav button').forEach((x,i)=>x.classList.toggle('active',i===0));
+c.querySelector('#recordTable').innerHTML='';
+download('Grade_1_Teacher_Assistant_Kenya_Shared.html','<!DOCTYPE html>\n'+c.outerHTML,'text/html')}
+const readDataURL=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)});
+async function saveMore(sec,i){
+if(!DEV)return;const k=itemKey(sec,i),old=LIB.items[k]||{};
+const e=document.getElementById('dv_e').value.split('\n').map(x=>x.trim()).filter(Boolean);
+const o={d:document.getElementById('dv_d').value.trim(),e,url:document.getElementById('dv_u').value.trim(),k:old.k||[]};
+if(o.url&&!/^https?:\/\//i.test(o.url)){alert('The link must start with http:// or https://');return}
+for(const f of [...document.getElementById('dv_f').files]){
+ if(f.size>2*1024*1024){alert(f.name+' is larger than 2 MB and was skipped.');continue}
+ o.k.push({name:f.name,type:f.type,data:await readDataURL(f)})}
+LIB.items[k]=o;if(persist())openMore(sec,i)}
+function resetMore(sec,i){if(DEV&&confirm('Remove your edits and uploaded files for this point?')){delete LIB.items[itemKey(sec,i)];persist();openMore(sec,i)}}
+function delK(sec,i,j){if(!DEV)return;const o=LIB.items[itemKey(sec,i)];if(o&&confirm('Delete this file?')){o.k.splice(j,1);persist();openMore(sec,i)}}
+async function openK(sec,i,j){const kf=resFor(sec,i).k[j];if(!kf)return;const blob=await (await fetch(kf.data)).blob();
+showInViewer(document.getElementById('mv'),{name:kf.name,type:kf.type,url:URL.createObjectURL(blob),file:new File([blob],kf.name,{type:kf.type})});document.getElementById('mv').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function openMore(sec,i){
+const pt=(packs[ctx.subject][sec]||[])[i]||'';const r=resFor(sec,i);const T=ctx.topic;
+const sub=x=>escapeHtml(x).replace(/\{topic\}/g,escapeHtml(T));
+let html=`<h3>More details &amp; examples</h3><small>${escapeHtml(ctx.subject)} - ${escapeHtml(T)}</small><div class="pt">${escapeHtml(pt)}</div>`;
+if(DEV){html+=`<div class="devform"><h4 style="margin-top:0">✏️ Developer: edit this point</h4>
+<label>Details for the teacher</label><textarea id="dv_d">${escapeHtml(r.d||'')}</textarea>
+<label>Examples (one per line)</label><textarea id="dv_e">${escapeHtml((r.e||[]).join('\n'))}</textarea>
+<small>Tip: write {topic} to insert the lesson topic automatically.</small>
+<label>Full resource link (optional)</label><input id="dv_u" placeholder="https://..." value="${escapeHtml(r.url||'')}">
+<label>Upload to KICD resources (image, PDF, Word, Excel, PowerPoint, video - max 2 MB each)</label><input id="dv_f" type="file" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt">
+<div class="actions"><button class="primary" type="button" onclick="saveMore('${sec}',${i})">💾 Save</button><button class="secondary" type="button" onclick="resetMore('${sec}',${i})">Reset to default</button></div></div>`}
+else{html+=`<h4>Details for the teacher</h4><p>${sub(r.d||'')}</p><h4>Examples you can use</h4><ul>${(r.e||[]).map(x=>`<li>${sub(x)}</li>`).join('')}</ul>`}
+html+=`<h4>KICD resources</h4>`;
+html+=r.k.length?`<div class="materials-list">${r.k.map((x,j)=>`<div class="material-item"><span>${fileIcon({type:x.type,name:x.name})} ${escapeHtml(x.name)}</span><span><button class="open-btn" type="button" onclick="openK('${sec}',${i},${j})">Open</button>${DEV?` <button class="secondary" type="button" onclick="delK('${sec}',${i},${j})">Delete</button>`:''}</span></div>`).join('')}</div>`:'<p><small>No files added for this point yet.</small></p>';
+html+=`<div class="viewer" id="mv"></div><div>${r.url?`<a class="ext" target="_blank" rel="noopener" href="${escapeHtml(r.url)}">Open full resource</a>`:''}<a class="ext" style="background:#64756d" target="_blank" rel="noopener" href="https://kicd.ac.ke/cbc-materials/lower-primary/">KICD website</a></div>`;
+document.getElementById('moreBody').innerHTML=html;
+document.getElementById('moreModal').classList.add('open')}
+function closeMore(){closeFile();document.getElementById('moreModal').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMore();closeFile()}});
+
+const packs={
+"English Activities":{
+objectives:["Identify and use key words related to the topic.","Listen and respond to simple oral instructions.","Use the target words in short spoken or written sentences."],
+activities:["Warm-up: teacher displays familiar objects/pictures and asks learners to name them.","Model: teacher introduces the target words and demonstrates pronunciation.","Pair work: learners practise saying the words to a partner.","Guided practice: learners match pictures/objects to words.","Independent practice: learners draw or write two examples related to the topic."],
+materials:["Picture cards or real objects","Manila paper/flashcards","Learner exercise books","Pencils/crayons"],
+assessment:["Name two items related to the lesson.","Match two words to their pictures.","Use one target word in a simple sentence.","Follow one oral instruction given by the teacher."],
+homework:["Draw three items related to the topic and label them.","Practise saying the new words to a parent/guardian."],
+remedial:["Use real objects and one-to-one prompting.","Repeat sounds/words slowly and use picture-word matching.","Give short individual practice before returning the learner to pair work."]
+},
+"Kiswahili":{
+objectives:["Kutambua na kutamka maneno muhimu ya somo.","Kusikiliza na kujibu maswali rahisi.","Kutumia maneno mapya katika sentensi fupi."],
+activities:["Utangulizi: mwalimu aonyeshe picha/vitu vinavyohusiana na mada.","Mifano: mwalimu atamke maneno mapya, wanafunzi warudie.","Jozi: wanafunzi waulizane na kujibu maswali rahisi.","Vikundi: kupanga picha au maneno kwa makundi.","Kazi binafsi: kuchora na kuandika maneno mawili au matatu."],
+materials:["Picha/kadi za maneno","Vitu halisi","Ubao","Vitabu na madaftari"],
+assessment:["Taja vitu viwili vinavyohusiana na mada.","Oanisha neno na picha yake.","Tunga sentensi moja fupi.","Jibu swali moja la mwalimu kwa usahihi."],
+homework:["Chora vitu vitatu vya mada na uviandike majina.","Soma maneno mapya pamoja na mzazi/mlezi."],
+remedial:["Tumia vitu halisi na kurudia kwa hatua ndogo.","Msaidie mwanafunzi kuoanisha picha na neno.","Mpe mazoezi mafupi ya mtu mmoja mmoja."]
+},
+"Mathematics":{
+objectives:["Recognise and represent numbers or quantities related to the topic.","Count or compare objects accurately.","Solve simple problems using objects, drawings or number symbols."],
+activities:["Warm-up: count familiar classroom objects together.","Teacher modelling: demonstrate the concept using bottle tops, sticks or counters.","Pair activity: learners count, sort, match or compare objects.","Group challenge: solve simple practical problems.","Independent task: learners complete a short exercise in their books."],
+materials:["Bottle tops/sticks/counters","Number cards","Pictures","Exercise books and pencils"],
+assessment:["Count a set of objects correctly.","Write or identify the requested number.","Compare two groups using more/less/equal where appropriate.","Solve one simple word problem."],
+homework:["Practise counting household objects with a parent/guardian.","Draw and count a small set of objects."],
+remedial:["Use concrete objects before symbols.","Reduce the number range and increase gradually.","Pair the learner with a supportive peer and use repeated counting."]
+},
+"Environmental Activities":{
+objectives:["Identify features or objects in the learner's immediate environment.","Describe simple observations using appropriate vocabulary.","Demonstrate a safe and responsible behaviour related to the topic."],
+activities:["Observation walk around the classroom/school compound.","Teacher-guided discussion using real objects or pictures.","Small groups classify, identify or sequence observations.","Learners share what they observed.","Teacher reinforces safety, hygiene or care for the environment as appropriate."],
+materials:["Real objects","Pictures","Chart/manila paper","Pencils/crayons"],
+assessment:["Identify two things observed.","State one use, feature or difference.","Demonstrate the correct/safe behaviour.","Answer two oral questions."],
+homework:["Observe one related item at home and report one thing about it.","Draw the item and label it if able."],
+remedial:["Use familiar objects and direct observation.","Ask one short question at a time.","Repeat the activity with guided prompts."]
+},
+"Creative Activities":{
+objectives:["Explore materials safely and creatively.","Create a simple product related to the topic.","Explain or demonstrate one step used in the activity."],
+activities:["Teacher demonstrates the finished example and safety rules.","Learners identify and handle materials.","Teacher guides learners through the first step.","Learners create their own simple product.","Gallery walk: learners display and talk about their work."],
+materials:["Paper","Crayons/colours","Safe locally available materials","Glue/scissors where appropriate and supervised"],
+assessment:["Identify the materials used.","Complete the main task safely.","Demonstrate one technique.","Explain one part of the finished work."],
+homework:["Collect one safe recyclable material that could be used in the next activity.","Practise a simple drawing or pattern."],
+remedial:["Provide a simpler template.","Demonstrate one step at a time.","Allow extra time and peer support."]
+},
+"CRE":{
+objectives:["Identify a simple value or Bible teaching related to the topic.","Retell or discuss the key idea in simple language.","Demonstrate one positive value in class or at home."],
+activities:["Short story or Bible narrative related to the theme.","Teacher asks simple recall and application questions.","Learners role-play a positive behaviour.","Class discussion: how can we practise the value?","Learners draw or write one thing they learned."],
+materials:["Bible","Picture cards","Story illustrations","Exercise books"],
+assessment:["Mention one lesson from the story.","Answer two simple questions.","Demonstrate or describe one positive behaviour.","Draw or state one application."],
+homework:["Tell a parent/guardian the lesson learned.","Draw one example of the value at home or school."],
+remedial:["Retell the story using pictures.","Ask yes/no or either/or questions first.","Model the desired behaviour and practise together."]
+}
+};
+
+function showTab(id,btn){
+document.querySelectorAll('.tabs').forEach(x=>x.classList.remove('show'));
+document.getElementById(id).classList.add('show');
+document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+btn.classList.add('active');
+if(id==='records') renderRecords();
+}
+function fillExample(){
+document.getElementById('subject').value='Mathematics';
+document.getElementById('topic').value='Numbers 1–20';
+document.getElementById('duration').value='40 minutes';
+document.getElementById('level').value='Introduction';
+document.getElementById('strand').value='Numbers';
+document.getElementById('substrand').value='Counting and number recognition';
+document.getElementById('outcome').value='Learners count, identify and represent numbers within the selected range using concrete objects and symbols.';
+document.getElementById('notes').value='Use bottle tops and sticks. Support learners who are still counting one-to-one.';
+generateLesson();
+}
+function generateLesson(){
+try {
+  const get = id => document.getElementById(id);
+  const s=get('subject').value;
+  const t=(get('topic').value||'').trim() || 'the selected topic';
+  const d=get('duration').value;
+  const n=get('classSize').value || 30;
+  const lev=get('level').value;
+  const strand=(get('strand') ? get('strand').value : '').trim();
+  const substrand=(get('substrand') ? get('substrand').value : '').trim();
+  const outcome=(get('outcome') ? get('outcome').value : '').trim();
+  const notes=(get('notes').value||'').trim();
+  const p=packs[s];ctx={subject:s,topic:t};
+
+  if(!p){
+    throw new Error('The selected learning area is not available.');
+  }
+
+  const q=p.assessment.map((x,i)=>`<li>${i+1}. ${escapeHtml(x)}${moreLink('assessment',i)}</li>`).join('');
+  const mark=p.assessment.map((x,i)=>`<li><b>${i+1} mark:</b> Accept a correct, age-appropriate response demonstrating the stated skill.</li>`).join('');
+
+  const activities=p.activities.map((x,i)=>`
+  <div class="activity-card">
+    <div class="activity-head">
+      <div><span class="activity-number">${i+1}</span><b>Activity ${i+1}</b></div>
+      <span class="badge">Activity ${i+1}</span>
+    </div>
+    <p>${escapeHtml(x)}</p>${moreLink('activities',i)}
+    <label>Activity points / teacher guidance</label>
+    <textarea class="activity-points" placeholder="Enter the key points, steps, questions, skills or guidance for this activity"></textarea>
+    <label>Materials for this activity</label>
+    <div class="material-row">
+      <input class="material-name" placeholder="e.g. flashcards, bottle tops, picture cards">
+      <input class="material-file" type="file" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt,.wps,.et,.dps,.odt">
+      <button class="secondary" type="button" onclick="addMaterial(${i},this)">Add material</button>
+    </div>
+    <div id="materials-${i}" class="materials-list"></div>
+    <div class="viewer"></div>
+  </div>`).join('');
+
+  get('output').innerHTML=`
+  <div class="actions no-print" style="justify-content:flex-end">
+    <button class="secondary" type="button" onclick="window.print()">🖨 Print / Save PDF</button>
+    <button class="secondary" type="button" onclick="saveLessonTemplate()">💾 Save lesson</button>
+  </div>
+  <h2>${escapeHtml(s)}: ${escapeHtml(t)}</h2>
+  <span class="badge">Grade 1</span><span class="badge">${escapeHtml(d)}</span><span class="badge">${escapeHtml(String(n))} learners</span><span class="badge">${escapeHtml(lev)}</span>
+
+  <div class="section curriculum-box">
+    <h3>1. Curriculum alignment</h3>
+    <table class="alignment-table">
+      <tr><th>Learning Area</th><td>${escapeHtml(s)}</td></tr>
+      <tr><th>Strand</th><td>${escapeHtml(strand||'Not entered')}</td></tr>
+      <tr><th>Sub-strand</th><td>${escapeHtml(substrand||'Not entered')}</td></tr>
+      <tr><th>Topic / Sub-topic</th><td>${escapeHtml(t)}</td></tr>
+      <tr><th>Specific learning outcome / competency</th><td>${escapeHtml(outcome||'Not entered')}</td></tr>
+    </table>
+  </div>
+
+  <div class="section"><h3>2. Learning objectives</h3><ul>${p.objectives.map((x,i)=>`<li>${escapeHtml(x)}${moreLink('objectives',i)}</li>`).join('')}</ul></div>
+  <div class="section"><h3>3. Lesson plan / flow</h3>
+    <ol>
+      <li><b>Introduction / warm-up (5–8 min):</b> Activate prior knowledge using familiar examples connected to <b>${escapeHtml(t)}</b>.</li>
+      <li><b>Development / modelling:</b> Teacher demonstrates the new concept and checks understanding.</li>
+      <li><b>Guided activity:</b> Learners work in pairs/groups with teacher support.</li>
+      <li><b>Independent practice:</b> Learners complete a short task individually.</li>
+      <li><b>Closure:</b> Learners share what they learned; teacher corrects misconceptions.</li>
+    </ol>
+  </div>
+  <div class="section"><h3>4. Activities — with points and materials</h3>
+    <p class="muted">Each activity has its own points/guidance field and material upload area.</p>
+    ${activities}
+  </div>
+  <div class="section"><h3>5. Teaching / learning materials summary</h3><ul>${p.materials.map((x,i)=>`<li>${escapeHtml(x)}${moreLink('materials',i)}</li>`).join('')}</ul></div>
+  <div class="section"><h3>6. Assessment questions</h3><ol>${q}</ol></div>
+  <div class="section"><h3>7. Marking guide</h3><ul>${mark}</ul><p><b>Suggested score:</b> ${p.assessment.length} marks.</p></div>
+  <div class="section"><h3>8. Homework</h3><ul>${p.homework.map((x,i)=>`<li>${escapeHtml(x)}${moreLink('homework',i)}</li>`).join('')}</ul></div>
+  <div class="section"><h3>9. Remedial exercises</h3><ul>${p.remedial.map((x,i)=>`<li>${escapeHtml(x)}${moreLink('remedial',i)}</li>`).join('')}</ul></div>
+  <div class="section"><h3>10. Differentiation / learner support</h3>
+    <p>Use concrete objects, pictures, modelling, repetition, pair work and short instructions. Provide additional time and smaller steps for learners who need support.</p>
+    ${notes?`<p><b>Teacher note:</b> ${escapeHtml(notes)}</p>`:''}
+  </div>
+  <div class="section"><h3>11. Learner-performance record</h3><p>After the lesson, open <b>Learner Records</b> to enter learner names and scores.</p></div>`;
+
+  const status=get('generateStatus');
+  status.textContent='Assistant Pack generated successfully.';
+  status.classList.remove('hidden');
+  status.style.background='#eef8f2';
+  status.style.borderColor='#cfe1d8';
+  status.style.color='#126b45';
+
+  get('output').scrollIntoView({behavior:'smooth',block:'start'});
+} catch(err) {
+  console.error(err);
+  const status=document.getElementById('generateStatus');
+  status.textContent='Could not generate the pack: '+err.message;
+  status.classList.remove('hidden');
+  status.style.background='#fff1f0';
+  status.style.borderColor='#f3c4bf';
+  status.style.color='#b42318';
+  alert('Could not generate the Assistant Pack. Please refresh the page and try again.');
+}
+}
+function addMaterial(activityIndex,btn){
+const card=btn.closest('.activity-card');
+const name=card.querySelector('.material-name').value.trim();
+const files=[...card.querySelector('.material-file').files];
+const list=card.querySelector('.materials-list');
+if(!name && !files.length){alert('Enter a material name or choose a file first.');return;}
+if(name){
+  const item=document.createElement('div');
+  item.className='material-item';
+  item.innerHTML=`<span>📘 ${escapeHtml(name)}</span><button class="secondary" type="button" onclick="this.parentElement.remove()">Remove</button>`;
+  list.appendChild(item);
+}
+files.forEach(file=>{
+  const id='f'+(++fileSeq);const url=URL.createObjectURL(file);
+  fileStore[id]={name:file.name,url,type:file.type||'',file};
+  const item=document.createElement('div');
+  item.className='material-item';
+  item.innerHTML=`<span>${fileIcon(file)} ${escapeHtml(file.name)} <small>(${Math.round(file.size/1024)} KB)</small></span><span><button class="open-btn no-print" type="button" onclick="openFile('${id}',this)">Open</button> <button class="secondary no-print" type="button" onclick="removeFile('${id}',this)">Remove</button></span>`;
+  list.appendChild(item);
+});
+card.querySelector('.material-name').value='';
+card.querySelector('.material-file').value='';
+}
+
+const fileStore={};let fileSeq=0;
+function fileExt(n){return (n.split('.').pop()||'').toLowerCase()}
+function fileKind(f){const t=f.type||'',e=fileExt(f.name);
+if(t.startsWith('image/'))return 'image';if(t==='application/pdf'||e==='pdf')return 'pdf';
+if(t.startsWith('video/'))return 'video';if(t.startsWith('audio/'))return 'audio';
+if(t.startsWith('text/')||e==='txt')return 'text';return 'other'}
+function fileIcon(f){return {image:'🖼️',pdf:'📕',video:'🎬',audio:'🎧',text:'📄',other:'📎'}[fileKind(f)]}
+function removeFile(id,btn){const f=fileStore[id];if(f){URL.revokeObjectURL(f.url);delete fileStore[id]}btn.closest('.material-item').remove()}
+const loaded={};
+function loadScript(src){return loaded[src]||(loaded[src]=new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>{delete loaded[src];no(new Error('offline'))};document.head.appendChild(s)}))}
+const CDN='https://cdnjs.cloudflare.com/ajax/libs/';
+function officeKind(e){return {docx:'word',doc:'oldword',odt:'oldword',wps:'wps',xlsx:'sheet',xls:'sheet',csv:'sheet',et:'wps',pptx:'ppt',ppt:'oldppt',dps:'wps'}[e]||''}
+function noteBox(msg){return `<div style="text-align:center;padding:24px"><p style="font-size:38px;margin:0">📎</p>${msg}</div>`}
+function openFile(id,btn){const f=fileStore[id];if(!f)return;showInViewer(btn.closest('.activity-card').querySelector('.viewer'),f)}
+async function showInViewer(v,f){
+closeFile();
+const e=fileExt(f.name),k=fileKind({type:f.type,name:f.name});
+v.innerHTML=`<div class="v-bar"><b>${escapeHtml(f.name)}</b><a class="secondary" href="${f.url}" download="${escapeHtml(f.name)}">⬇ Download</a><button class="secondary" type="button" onclick="this.closest('.viewer').classList.toggle('big')">⤢ Expand</button><button class="secondary" type="button" onclick="closeFile()">✕ Close</button></div><div class="v-body">Loading…</div>`;
+v.classList.add('open');v.scrollIntoView({behavior:'smooth',block:'nearest'});
+const body=v.querySelector('.v-body');
+try{
+if(k==='image')body.innerHTML=`<img src="${f.url}" alt="">`;
+else if(k==='pdf')body.innerHTML=`<iframe src="${f.url}"></iframe>`;
+else if(k==='video')body.innerHTML=`<video src="${f.url}" controls playsinline></video>`;
+else if(k==='audio')body.innerHTML=`<audio src="${f.url}" controls style="width:100%"></audio>`;
+else if(k==='text'&&e!=='csv'){const pre=document.createElement('pre');pre.textContent=await f.file.text();body.innerHTML='';body.appendChild(pre)}
+else{
+ const ok=officeKind(e);
+ if(ok==='word'){await loadScript(CDN+'mammoth/1.6.0/mammoth.browser.min.js');const r=await mammoth.convertToHtml({arrayBuffer:await f.file.arrayBuffer()});body.innerHTML=r.value||'<p>(Empty document)</p>'}
+ else if(ok==='sheet'){await loadScript(CDN+'xlsx/0.18.5/xlsx.full.min.js');const wb=XLSX.read(await f.file.arrayBuffer());
+  const show=n=>{body.querySelector('.sheet-body').innerHTML=XLSX.utils.sheet_to_html(wb.Sheets[n],{editable:false});body.querySelectorAll('.sheet-tabs button').forEach(b=>b.classList.toggle('primary',b.dataset.n===n))};
+  body.innerHTML='<div class="sheet-tabs"></div><div class="sheet-body" style="overflow:auto"></div>';
+  const tabs=body.querySelector('.sheet-tabs');wb.SheetNames.forEach(n=>{const b=document.createElement('button');b.type='button';b.className='secondary';b.dataset.n=n;b.textContent=n;b.onclick=()=>show(n);tabs.appendChild(b)});show(wb.SheetNames[0])}
+ else if(ok==='ppt'){await loadScript(CDN+'jszip/3.10.1/jszip.min.js');const z=await JSZip.loadAsync(await f.file.arrayBuffer());
+  const names=Object.keys(z.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>parseInt(a.match(/\d+/)[0])-parseInt(b.match(/\d+/)[0]));
+  let out='';for(let i=0;i<names.length;i++){const x=await z.file(names[i]).async('string');const t=[...x.matchAll(/<a:t>([^<]*)<\/a:t>/g)].map(m=>m[1]);out+=`<div class="slide"><h4>Slide ${i+1}</h4>${t.map(s=>`<p>${s}</p>`).join('')||'<p><i>(picture / no text)</i></p>'}</div>`}
+  body.innerHTML=out+'<p><small>Text of each slide is shown. Pictures and animations appear in the downloaded file.</small></p>'}
+ else if(ok){body.innerHTML=noteBox(`<p><b>${escapeHtml(f.name)}</b></p><p>${ok==='wps'?'WPS-format':'Old-format'} files cannot be displayed in the browser.<br>In WPS Office choose <b>Save as</b> ${e==='et'?'.xlsx':e==='dps'?'.pptx':'.docx'} (or PDF), then upload that file to view it here.</p>`)}
+ else body.innerHTML=noteBox(`<p><b>${escapeHtml(f.name)}</b></p><p>This file type cannot be previewed. Use Download.</p>`)
+}
+}catch(err){body.innerHTML=noteBox(err.message==='offline'?'<p>The viewer for this file type needs internet the first time it is used.<br>Connect and tap Open again, or save the file as a PDF.</p>':'<p>Could not display this file. It may be damaged or password-protected.<br>Try Download or save it as a PDF.</p>')}
+}
+function closeFile(){document.querySelectorAll('.viewer.open').forEach(v=>{v.classList.remove('open','big');v.innerHTML=''})}
+function saveLessonTemplate(){
+const subject=document.getElementById('subject').value;
+const data={
+subject,
+topic:document.getElementById('topic').value,
+strand:document.getElementById('strand').value,
+substrand:document.getElementById('substrand').value,
+outcome:document.getElementById('outcome').value,
+duration:document.getElementById('duration').value,
+level:document.getElementById('level').value,
+notes:document.getElementById('notes').value,
+savedAt:new Date().toISOString()
+};
+localStorage.setItem('g1ta_lesson_template',JSON.stringify(data));
+alert('Lesson alignment details saved on this device.');
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function getRecords(){return JSON.parse(localStorage.getItem('g1ta_records')||'[]')}
+function saveRecords(r){localStorage.setItem('g1ta_records',JSON.stringify(r))}
+function addLearner(){const name=prompt('Learner name:');if(!name)return;const r=getRecords();r.push({name,subject:'',score:''});saveRecords(r);renderRecords()}
+function updateRec(i,key,val){const r=getRecords();r[i][key]=val;saveRecords(r);renderRecords(false)}
+function deleteRec(i){const r=getRecords();r.splice(i,1);saveRecords(r);renderRecords()}
+function clearRecords(){if(confirm('Delete all learner records from this browser?')){localStorage.removeItem('g1ta_records');renderRecords()}}
+function renderRecords(){
+const r=getRecords();document.getElementById('count').textContent=r.length;
+const scores=r.map(x=>Number(x.score)).filter(x=>Number.isFinite(x)&&x>=0);
+const av=scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:0;
+document.getElementById('avg').textContent=Math.round(av)+'%';
+document.getElementById('strong').textContent=scores.filter(x=>x>=70).length;
+document.getElementById('support').textContent=scores.filter(x=>x<50).length;
+if(!r.length){document.getElementById('recordTable').innerHTML='<p>No learners added yet.</p>';return}
+document.getElementById('recordTable').innerHTML=`<table><thead><tr><th>Learner</th><th>Learning area</th><th>Score %</th><th>Action</th></tr></thead><tbody>${r.map((x,i)=>`<tr><td><input value="${escapeHtml(x.name)}" onchange="updateRec(${i},'name',this.value)"></td><td><select onchange="updateRec(${i},'subject',this.value)"><option ${x.subject==='English Activities'?'selected':''}>English Activities</option><option ${x.subject==='Kiswahili'?'selected':''}>Kiswahili</option><option ${x.subject==='Mathematics'?'selected':''}>Mathematics</option><option ${x.subject==='Environmental Activities'?'selected':''}>Environmental Activities</option><option ${x.subject==='Creative Activities'?'selected':''}>Creative Activities</option><option ${x.subject==='CRE'?'selected':''}>CRE</option></select></td><td><input type="number" min="0" max="100" value="${x.score}" onchange="updateRec(${i},'score',this.value)"></td><td><button class="secondary" onclick="deleteRec(${i})">Delete</button></td></tr>`).join('')}</tbody></table>`;
+}
+renderRecords();
+</script>
+</body>
+</html>
